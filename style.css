@@ -1,0 +1,186 @@
+* {
+  box-sizing: border-box;
+}
+
+/* page-actions-container
+cell-actions-container
+formula-actions-container
+gird-contaier
+sheets-action-container */
+
+:root {
+  --color-creme: #f1f2f6;
+  --color-green: #218c74;
+  --color-gray: #ecf0f1;
+  --color-border:#dfe4ea;
+  --color-dummy:#747d8c;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.containers {
+  height: 3rem;
+}
+
+.page-actions-container {
+  background-color: var(--color-green);
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.page-action {
+  margin-inline: 0.5rem;
+  color: var(--color-creme);
+}
+
+/* cell actions style */
+.cell-actions-container {
+  background-color: var(--color-gray);
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+}
+
+.cell-actions-container span,
+.cell-actions-container select {
+  margin-inline: 1rem;
+}
+
+.font-family-prop,
+.font-size-prop {
+  padding: 0.2rem;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+}
+
+/* formula actions style */
+.formula-actions-container {
+  background-color: var(--color-gray);
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+  height:2rem;
+}
+
+.formula-actions-container > * {
+  margin-right: 0.7rem;
+}
+
+.formula-actions-container input{
+    border: none;
+    outline: none;
+    height:70%;
+}
+
+.formula-icon {
+  width: 1.2rem;
+}
+
+.address-bar {
+  width: 5rem;
+  text-align: center;
+}
+
+.formula-bar {
+  width: calc(100vw - 5rem - 0.7rem - 0.7rem - 0.7rem);
+}
+
+/* sheets actions style */
+.sheets-actions-container {
+  background-color: lightcoral;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--color-gray);
+  padding-left: 1rem;
+}
+.sheets-folder-container {
+  height: 80%;
+  width: calc(100vw - 2vw);
+  display: flex;
+  align-items: center;
+}
+
+.sheet-add-icon {
+  width: 2vw;
+  margin-inline: 0.3rem;
+}
+.sheet-folder {
+  text-decoration: underline;
+  font-weight: bold;
+  text-decoration-thickness: 3px;
+  font-size: 0.9rem;
+}
+
+/* grid container style */
+/* subtracting the height of the containers from the height of the viewport to get height of the cells grid */
+.grid-container {
+  height: calc(100vh - 3rem - 3rem - 3rem - 2rem);
+  overflow: scroll;
+  display: grid;
+  grid-template-columns: 2rem auto;
+  grid-template-rows: 2rem auto;
+}
+
+.column-address-container{
+    height:2rem;
+    grid-column: 2/-1;
+    display: flex;
+    position: sticky;
+    top:0;
+}
+
+.row-address-container{
+    grid-row:2/-1;
+    width:2rem;
+    position: sticky;
+    left:0;
+}
+
+p.row-address, p.column-address{
+    background-color: var(--color-gray);
+    border-bottom:2px solid var(--color-border);
+    border-right:2px solid var(--color-border);
+    margin:0;
+    width:2rem;
+    height:2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+p.column-address{
+    width:5rem;
+}
+
+.dummy-top-left{
+    background-color: var(--color-dummy);
+    width:2rem;
+    height:2rem;
+    grid-column: 1/2;
+    position: sticky;
+    top:0;
+    left:0;
+    z-index: 1;
+}
+
+.cells-container-grid{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.grid-cell{
+    background-color: var(--color-gray);
+    width:5rem;
+    height:2rem;
+    border-bottom: 2px solid var(--color-border);
+    border-right: 2px solid var(--color-border);
+    outline:none;
+}
