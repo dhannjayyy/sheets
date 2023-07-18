@@ -59,6 +59,14 @@ body {
   outline: none;
 }
 
+.material-icons{
+  cursor: pointer;
+}
+
+input[type="color"]{
+  cursor: pointer;
+}
+
 /* formula actions style */
 .formula-actions-container {
   background-color: var(--color-gray);
@@ -91,6 +99,25 @@ body {
   width: calc(100vw - 5rem - 0.7rem - 0.7rem - 0.7rem);
 }
 
+#format-color-text-picker, #format-color-text-bg{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#format-color-text-picker span, #format-color-text-bg span{
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+#format-color-text-picker input, #format-color-text-bg input{
+  opacity: 0;
+  z-index: 2;
+}
+
+
 /* sheets actions style */
 .sheets-actions-container {
   background-color: lightcoral;
@@ -114,7 +141,6 @@ body {
 .sheet-folder {
   text-decoration: underline;
   font-weight: bold;
-  text-decoration-thickness: 3px;
   font-size: 0.9rem;
 }
 
@@ -177,10 +203,11 @@ p.column-address{
 }
 
 .grid-cell{
-    background-color: var(--color-gray);
+    background-color: white;
     width:5rem;
     height:2rem;
     border-bottom: 2px solid var(--color-border);
     border-right: 2px solid var(--color-border);
     outline:none;
+    font-family: "monospace";
 }

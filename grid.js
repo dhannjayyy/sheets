@@ -7,8 +7,14 @@ const columnAddressContainerRef = document.querySelector(
 const cellsContainerGrid = document.querySelector(".cells-container-grid");
 const addressBar = document.querySelector(".address-bar");
 
+//delegated event listener for all the cells in the grid
 cellsContainerGrid.addEventListener("click", (e) => {
   addressBar.value = e.target.getAttribute("data-address");
+  activeCellAddress = addressBar.value; //this is the active cell
+  if (!sheetStorage[activeCellAddress]) {
+    sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
+  }
+  cellActionsUIChanger();
 });
 
 for (var i = 0; i < rowCount; i++) {
@@ -30,6 +36,7 @@ for (var i = 0; i < rowCount; i++) {
     const cell = document.createElement("div");
     cell.className = "grid-cell";
     cell.setAttribute("contenteditable", true);
+    cell.setAttribute("spellcheck", false);
     cell.setAttribute("data-address", `${String.fromCharCode(65 + j)}${i + 1}`);
     cellsContainerGrid.appendChild(cell);
   }

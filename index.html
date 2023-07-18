@@ -11,55 +11,72 @@
     <title>Excel</title>
   </head>
   <body>
+    <!-- page actions container -->
     <div class="containers page-actions-container">
       <div class="page-action">Home</div>
       <div class="page-action">Save</div>
       <div class="page-action">File</div>
     </div>
+
+    <!-- cell actions container -->
     <div class="containers cell-actions-container">
       <span class="material-icons"> content_copy </span>
       <span class="material-icons"> content_cut </span>
       <span class="material-icons"> content_paste </span>
-      <select class="font-family-prop">
+      <select class="button-fontFamily font-family-prop" name="fontFamily">
         <option value="monospace">Monospace</option>
         <option value="sans-serif">Sans-serif</option>
         <option value="fantasy">Fantasy</option>
         <option value="cursive">Cursive</option>
       </select>
-      <select class="font-size-prop">
+      <select class="button-fontSize font-size-prop" name="fontSize">
         <option value="14">14</option>
         <option value="16">16</option>
         <option value="18">18</option>
         <option value="20">20</option>
       </select>
-      <span class="material-icons"> format_bold </span>
-      <span class="material-icons"> format_italic </span>
-      <span class="material-icons"> format_underlined </span>
-      <span class="material-icons"> format_align_left </span>
-      <span class="material-icons"> format_align_center </span>
-      <span class="material-icons"> format_align_right </span>
+      <span class="button-bold material-icons"> format_bold </span>
+      <span class="button-italic material-icons"> format_italic </span>
+      <span class="button-underline material-icons"> format_underlined </span>
+      <span class="button-leftAlign font-alignment material-icons"> format_align_left </span>
+      <span class="button-centerAlign font-alignment material-icons"> format_align_center </span>
+      <span class="button-rightAlign font-alignment material-icons"> format_align_right </span>
+      <div id="format-color-text-picker">
+        <input class="button-textColor" type="color" name="font-color" />
+        <span class="material-icons"> format_color_text </span>
+      </div>
+      <div id="format-color-text-bg">
+        <input class="button-backgroundColor" type="color" name="background-color" />
+        <span class="material-icons"> format_color_fill </span>
+      </div>
     </div>
+
+    <!-- formula actions container -->
     <div class="containers formula-actions-container">
-        <input type="text" readonly class="address-bar">
-        <img class="formula-icon" src="https://img.icons8.com/ios/50/000000/formula-fx">
-        <input type="text" class="formula-bar">
+      <input type="text" readonly class="address-bar" />
+      <img
+        class="formula-icon"
+        src="https://img.icons8.com/ios/50/000000/formula-fx"
+      />
+      <input type="text" class="formula-bar" />
     </div>
     <div class="containers grid-container">
-        <div class="dummy-top-left"></div>
-        <div class="row-address-container"></div>
-        <div class="column-address-container"></div>
-        <div class="cells-container-grid"></div>
+      <div class="dummy-top-left"></div>
+      <div class="row-address-container"></div>
+      <div class="column-address-container"></div>
+      <div class="cells-container-grid"></div>
     </div>
+
+    <!-- sheets action container  -->
     <div class="containers sheets-actions-container">
       <div class="sheet-add-icon">
         <span class="material-icons"> post_add </span>
       </div>
       <div class="sheets-folder-container">
-        <div class="sheet-folder">
-            Sheet 1
-        </div>
+        <div class="sheet-folder">Sheet 1</div>
       </div>
     </div>
-    <script src="./script.js"></script>
+    <script src="./grid.js"></script>
+    <script src="./cell-properties.js"></script>
   </body>
 </html>
