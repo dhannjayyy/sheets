@@ -8,13 +8,28 @@ const cellsContainerGrid = document.querySelector(".cells-container-grid");
 const addressBar = document.querySelector(".address-bar");
 
 //delegated event listener for all the cells in the grid
-cellsContainerGrid.addEventListener("click", (e) => {
+cellsContainerGrid.addEventListener(
+  "click",
+  (e) => {
+    addressBar.value = e.target.getAttribute("data-address");
+    activeCellAddress = addressBar.value; //this is the active cell
+    if (!sheetStorage[activeCellAddress]) {
+      sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
+    }
+    cellActionsUIChanger();
+  },
+  false
+);
+
+cellsContainerGrid.addEventListener("focusout", (e) => {
   addressBar.value = e.target.getAttribute("data-address");
   activeCellAddress = addressBar.value; //this is the active cell
-  if (!sheetStorage[activeCellAddress]) {
-    sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
+  let [cell, activeCellProp] = activeCell(activeCellAddress);
+  if (activeCellProp) {
+    activeCellProp.value = Number(cell.innerText)
+      ? Number(cell.innerText)
+      : cell.innerText;
   }
-  cellActionsUIChanger();
 });
 
 for (var i = 0; i < rowCount; i++) {

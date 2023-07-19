@@ -10,6 +10,8 @@ const cellPropertiesPrototype = {
   fontSize: "14",
   textColor: "#000000",
   backgroundColor: "#ffffff",
+  value: "",
+  formula: "",
 };
 let activePropBackgroundColor = "#d1d8e0";
 
@@ -17,6 +19,10 @@ const activeCell = (activeCellAddress) => {
   let cell = `.grid-cell[data-address="${activeCellAddress}"]`;
   cell = document.querySelector(cell);
   let activeCellProp = sheetStorage[activeCellAddress];
+  if (!sheetStorage[activeCellAddress] && cell) {
+    sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype}
+  }
+  activeCellProp = sheetStorage[activeCellAddress];
   return [cell, activeCellProp];
 };
 
@@ -121,7 +127,6 @@ cellActionsContainer.addEventListener("change", (e) => {
   const cellActionButton = e.target;
   if (validButtonClick(e) === "change") {
     let [cell, activeCellProp] = activeCell(activeCellAddress);
-    console.log(cellActionButton);
     switch (cellActionButton.classList[0]) {
       case "button-fontFamily":
         activeCellProp.fontFamily = cellActionButton.value;
@@ -172,26 +177,45 @@ let firstCell = document.querySelector(".grid-cell");
 firstCell.click();
 
 // changing the cell actions buttons UI according to the property object of the cell
-function cellActionsUIChanger (){
-    const [,activeCellProps] = activeCell(activeCellAddress);
-    const buttonBold = document.querySelector(".button-bold");
-    const buttonItalic = document.querySelector(".button-italic");
-    const buttonUnderline = document.querySelector(".button-underline");
-    const buttonLeftAlign = document.querySelector(".button-leftAlign");
-    const buttonCenterAlign = document.querySelector(".button-centerAlign");
-    const buttonRightAlign = document.querySelector(".button-rightAlign");
-    const buttonFontFamily = document.querySelector(".button-fontFamily");
-    const buttonFontSize = document.querySelector(".button-fontSize");
-    const buttonTextcolor = document.querySelector(".button-textColor");
-    const buttonBackgroundColor = document.querySelector(".button-backgroundColor");
-    buttonBold.style.backgroundColor = activeCellProps.bold ? activePropBackgroundColor : "transparent";
-    buttonItalic.style.backgroundColor = activeCellProps.italic ? activePropBackgroundColor : "transparent";
-    buttonUnderline.style.backgroundColor = activeCellProps.underline ? activePropBackgroundColor : "transparent";
-    buttonLeftAlign.style.backgroundColor = activeCellProps.textAlign === "left" ? activePropBackgroundColor : "transparent";
-    buttonCenterAlign.style.backgroundColor = activeCellProps.textAlign === "center" ? activePropBackgroundColor : "transparent";
-    buttonRightAlign.style.backgroundColor = activeCellProps.textAlign === "right" ? activePropBackgroundColor : "transparent";
-    buttonFontFamily.value = activeCellProps.fontFamily;
-    buttonFontSize.value = activeCellProps.fontSize;
-    buttonTextcolor.value = activeCellProps.textColor;
-    buttonBackgroundColor.value = activeCellProps.backgroundColor;
+function cellActionsUIChanger() {
+  const [, activeCellProps] = activeCell(activeCellAddress);
+  const buttonBold = document.querySelector(".button-bold");
+  const buttonItalic = document.querySelector(".button-italic");
+  const buttonUnderline = document.querySelector(".button-underline");
+  const buttonLeftAlign = document.querySelector(".button-leftAlign");
+  const buttonCenterAlign = document.querySelector(".button-centerAlign");
+  const buttonRightAlign = document.querySelector(".button-rightAlign");
+  const buttonFontFamily = document.querySelector(".button-fontFamily");
+  const buttonFontSize = document.querySelector(".button-fontSize");
+  const buttonTextcolor = document.querySelector(".button-textColor");
+  const buttonBackgroundColor = document.querySelector(
+    ".button-backgroundColor"
+  );
+  const formulabar = document.querySelector(".formula-bar");
+  formulabar.value = activeCellProps.formula;
+  buttonBold.style.backgroundColor = activeCellProps.bold
+    ? activePropBackgroundColor
+    : "transparent";
+  buttonItalic.style.backgroundColor = activeCellProps.italic
+    ? activePropBackgroundColor
+    : "transparent";
+  buttonUnderline.style.backgroundColor = activeCellProps.underline
+    ? activePropBackgroundColor
+    : "transparent";
+  buttonLeftAlign.style.backgroundColor =
+    activeCellProps.textAlign === "left"
+      ? activePropBackgroundColor
+      : "transparent";
+  buttonCenterAlign.style.backgroundColor =
+    activeCellProps.textAlign === "center"
+      ? activePropBackgroundColor
+      : "transparent";
+  buttonRightAlign.style.backgroundColor =
+    activeCellProps.textAlign === "right"
+      ? activePropBackgroundColor
+      : "transparent";
+  buttonFontFamily.value = activeCellProps.fontFamily;
+  buttonFontSize.value = activeCellProps.fontSize;
+  buttonTextcolor.value = activeCellProps.textColor;
+  buttonBackgroundColor.value = activeCellProps.backgroundColor;
 }
