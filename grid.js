@@ -17,9 +17,9 @@ function clickAndFocusOnCell(e) {
 }
 
 //delegated event listener for all the cells in the grid
-cellsContainerGrid.addEventListener("click", (e) => {
-  clickAndFocusOnCell(e);
-});
+// cellsContainerGrid.addEventListener("click", (e) => {
+//   clickAndFocusOnCell(e);
+// });
 cellsContainerGrid.addEventListener("focusin", (e) => {
   clickAndFocusOnCell(e);
 });

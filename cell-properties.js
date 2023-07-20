@@ -12,17 +12,17 @@ const cellPropertiesPrototype = {
   backgroundColor: "#ffffff",
   value: "",
   formula: "",
+  children: "[]",
 };
 let activePropBackgroundColor = "#d1d8e0";
 
 const getCellAndProp = (activeCellAddress) => {
   let cell = `.grid-cell[data-address="${activeCellAddress}"]`;
   cell = document.querySelector(cell);
-  let activeCellProp = sheetStorage[activeCellAddress];
   if (!sheetStorage[activeCellAddress] && cell) {
-    sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype}
+    sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
   }
-  activeCellProp = sheetStorage[activeCellAddress];
+  let activeCellProp = sheetStorage[activeCellAddress];
   return [cell, activeCellProp];
 };
 
@@ -174,7 +174,7 @@ cellActionsContainer.addEventListener("change", (e) => {
 
 //making first cell clicked by-default
 let firstCell = document.querySelector(".grid-cell");
-firstCell.click();
+firstCell.focus();
 
 // changing the cell actions buttons UI according to the property object of the cell
 function cellActionsUIChanger() {
