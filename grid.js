@@ -7,28 +7,38 @@ const columnAddressContainerRef = document.querySelector(
 const cellsContainerGrid = document.querySelector(".cells-container-grid");
 const addressBar = document.querySelector(".address-bar");
 
+function clickAndFocusOnCell(e) {
+  addressBar.value = e.target.getAttribute("data-address");
+  activeCellAddress = addressBar.value; //this is the active cell
+  if (!sheetStorage[activeCellAddress]) {
+    sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
+  }
+  cellActionsUIChanger();
+}
+
 //delegated event listener for all the cells in the grid
-cellsContainerGrid.addEventListener(
-  "click",
-  (e) => {
-    addressBar.value = e.target.getAttribute("data-address");
-    activeCellAddress = addressBar.value; //this is the active cell
-    if (!sheetStorage[activeCellAddress]) {
-      sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
-    }
-    cellActionsUIChanger();
-  },
-  false
-);
+cellsContainerGrid.addEventListener("click", (e) => {
+  clickAndFocusOnCell(e);
+});
+cellsContainerGrid.addEventListener("focusin", (e) => {
+  clickAndFocusOnCell(e);
+});
 
 cellsContainerGrid.addEventListener("focusout", (e) => {
   addressBar.value = e.target.getAttribute("data-address");
   activeCellAddress = addressBar.value; //this is the active cell
-  let [cell, activeCellProp] = activeCell(activeCellAddress);
+  let [cell, activeCellProp] = getCellAndProp(activeCellAddress);
   if (activeCellProp) {
     activeCellProp.value = Number(cell.innerText)
       ? Number(cell.innerText)
       : cell.innerText;
+  }
+  if (
+    activeCellProp.formula &&
+    activeCellProp.value !== evaluateFormula(activeCellProp.formula)
+  ) {
+    activeCellProp.value = evaluateFormula(activeCellProp.formula);
+    cell.innerText = activeCellProp.value;
   }
 });
 

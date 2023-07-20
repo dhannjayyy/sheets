@@ -15,7 +15,7 @@ const cellPropertiesPrototype = {
 };
 let activePropBackgroundColor = "#d1d8e0";
 
-const activeCell = (activeCellAddress) => {
+const getCellAndProp = (activeCellAddress) => {
   let cell = `.grid-cell[data-address="${activeCellAddress}"]`;
   cell = document.querySelector(cell);
   let activeCellProp = sheetStorage[activeCellAddress];
@@ -66,7 +66,7 @@ const cellActionsContainer = document.querySelector(".cell-actions-container");
 cellActionsContainer.addEventListener("click", (e) => {
   const cellActionButton = e.target;
   if (validButtonClick(e) === "click") {
-    let [cell, activeCellProp] = activeCell(activeCellAddress);
+    let [cell, activeCellProp] = getCellAndProp(activeCellAddress);
     switch (cellActionButton.classList[0]) {
       case "button-bold":
         activeCellProp.bold = !activeCellProp.bold; //change in data
@@ -126,7 +126,7 @@ cellActionsContainer.addEventListener("click", (e) => {
 cellActionsContainer.addEventListener("change", (e) => {
   const cellActionButton = e.target;
   if (validButtonClick(e) === "change") {
-    let [cell, activeCellProp] = activeCell(activeCellAddress);
+    let [cell, activeCellProp] = getCellAndProp(activeCellAddress);
     switch (cellActionButton.classList[0]) {
       case "button-fontFamily":
         activeCellProp.fontFamily = cellActionButton.value;
@@ -178,7 +178,7 @@ firstCell.click();
 
 // changing the cell actions buttons UI according to the property object of the cell
 function cellActionsUIChanger() {
-  const [, activeCellProps] = activeCell(activeCellAddress);
+  const [, activeCellProps] = getCellAndProp(activeCellAddress);
   const buttonBold = document.querySelector(".button-bold");
   const buttonItalic = document.querySelector(".button-italic");
   const buttonUnderline = document.querySelector(".button-underline");
