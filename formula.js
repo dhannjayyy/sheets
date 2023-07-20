@@ -7,6 +7,16 @@ formulabar.addEventListener("keydown", (e) => {
   }
 });
 
+function updateChildren(parentCellProps) {
+    const children = JSON.parse(parentCellProps.children);
+    for (var child of children) {
+      const [childCell, childCellProps] = getCellAndProp(child);
+      childCellProps.value = evaluateFormula(childCellProps.formula);
+      childCell.innerText = childCellProps.value;
+      updateChildren(childCellProps);
+    }
+  }
+
 function establishRelationParentChild(expression) {
   if (expression === "") return;
   const childCell = addressBar.value;
@@ -19,7 +29,7 @@ function establishRelationParentChild(expression) {
 
 // Update the children property of the cell, that are no more parent of cell
 function removeChildFromParent(childCell) {
-    const childCellProp = getCellAndProp(childCell)[1];
+  const childCellProp = getCellAndProp(childCell)[1];
   const oldParentCells = getDependentcells(childCellProp.formula);
   for (var oldParentCell of oldParentCells) {
     const [, oldParentCellProps] = getCellAndProp(oldParentCell);
@@ -27,31 +37,29 @@ function removeChildFromParent(childCell) {
     const childIndex = oldParentCellProps.children.indexOf(childCell);
     if (childIndex !== -1) oldParentCellProps.children.splice(childIndex, 1);
     oldParentCellProps.children = JSON.stringify(oldParentCellProps.children);
+  }
 }
-}
-
 
 // Update the children property of the cell
 function addChildToParent(parentCells) {
-    const childCell = addressBar.value;
-    for (var parentCell of parentCells) {
-        const [, parentCellProp] = getCellAndProp(parentCell);
-        parentCellProp.children = JSON.parse(parentCellProp.children);
-        if (!parentCellProp.children.includes(childCell)) {
+  const childCell = addressBar.value;
+  for (var parentCell of parentCells) {
+    const [, parentCellProp] = getCellAndProp(parentCell);
+    parentCellProp.children = JSON.parse(parentCellProp.children);
+    if (!parentCellProp.children.includes(childCell)) {
       parentCellProp.children.push(childCell);
     }
     parentCellProp.children = JSON.stringify(parentCellProp.children);
   }
-  console.log(sheetStorage);
 }
 
 function changeUIandCellPropOnFormulaChange(expression) {
   const [cell, activeCellProps] = getCellAndProp(activeCellAddress);
-  activeCellProps.formula = expression ? expression : "";
-  activeCellProps.value = evaluateFormula(expression)
-    ? evaluateFormula(expression)
-    : "";
+  if (expression === activeCellProps.formula) return;
+  activeCellProps.formula = expression;
+  activeCellProps.value = evaluateFormula(expression);
   cell.innerText = activeCellProps.value;
+  updateChildren(activeCellProps);
 }
 
 function toCapitalCase(str) {

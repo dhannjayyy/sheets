@@ -40,6 +40,7 @@ cellsContainerGrid.addEventListener("focusout", (e) => {
     activeCellProp.value = evaluateFormula(activeCellProp.formula);
     cell.innerText = activeCellProp.value;
   }
+  updateChildren(activeCellProp);
 });
 
 for (var i = 0; i < rowCount; i++) {
