@@ -1,14 +1,21 @@
 const formulabar = document.querySelector(".formula-bar");
-formulabar.addEventListener("keydown", (e) => {
+formulabar.addEventListener("keydown", async (e) => {
   const expression = e.target.value;
   if (e.key === "Enter") {
     establishRelationParentChild(expression);
-    if (checkCycle() === true) {
-      alert("There is a loop in your formula. Please change it and try again.");
+    const cycleCell = checkCycle();
+    if (cycleCell) {
+      let response = confirm("There is a loop in your formula. Would you like to trace it.");
+      while(response === true) {
+        await traceCycle(cycleCell);
+        response = confirm("There is a loop in your formula. Would you like to trace it.");
+      }
+
       const child = addressBar.value;
       const childCellProp = getCellAndProp(child)[1];
       //removeChildFromParent finds the dependency from current formula, so we need to set it to new formula
       childCellProp.formula = expression;
+      
       removeChildFromParent(child);
       //After the removal of cyclic dependency, we also need to update the UI, change the formula to blank
       childCellProp.formula = "";
