@@ -3,19 +3,31 @@ formulabar.addEventListener("keydown", (e) => {
   const expression = e.target.value;
   if (e.key === "Enter") {
     establishRelationParentChild(expression);
+    if (checkCycle() === true) {
+      alert("There is a loop in your formula. Please change it and try again.");
+      const child = addressBar.value;
+      const childCellProp = getCellAndProp(child)[1];
+      //removeChildFromParent finds the dependency from current formula, so we need to set it to new formula
+      childCellProp.formula = expression;
+      removeChildFromParent(child);
+      //After the removal of cyclic dependency, we also need to update the UI, change the formula to blank
+      childCellProp.formula = "";
+      formulabar.value = childCellProp.formula;
+      return;
+    }
     changeUIandCellPropOnFormulaChange(expression);
   }
 });
 
 function updateChildren(parentCellProps) {
-    const children = JSON.parse(parentCellProps.children);
-    for (var child of children) {
-      const [childCell, childCellProps] = getCellAndProp(child);
-      childCellProps.value = evaluateFormula(childCellProps.formula);
-      childCell.innerText = childCellProps.value;
-      updateChildren(childCellProps);
-    }
+  const children = JSON.parse(parentCellProps.children);
+  for (var child of children) {
+    const [childCell, childCellProps] = getCellAndProp(child);
+    childCellProps.value = evaluateFormula(childCellProps.formula);
+    childCell.innerText = childCellProps.value;
+    updateChildren(childCellProps);
   }
+}
 
 function establishRelationParentChild(expression) {
   if (expression === "") return;
@@ -88,7 +100,7 @@ function evaluateFormula(expression) {
         EVAL_FLAG = false;
       }
     });
-    return EVAL_FLAG ? eval(expression) : "Can not Evaluate";
+    return EVAL_FLAG ? eval(expression) : "";
   } else {
     try {
       return eval(expression);
