@@ -5,17 +5,21 @@ formulabar.addEventListener("keydown", async (e) => {
     establishRelationParentChild(expression);
     const cycleCell = checkCycle();
     if (cycleCell) {
-      let response = confirm("There is a loop in your formula. Would you like to trace it.");
-      while(response === true) {
+      let response = confirm(
+        "There is a loop in your formula. Would you like to trace it."
+      );
+      while (response === true) {
         await traceCycle(cycleCell);
-        response = confirm("There is a loop in your formula. Would you like to trace it.");
+        response = confirm(
+          "There is a loop in your formula. Would you like to trace it."
+        );
       }
 
       const child = addressBar.value;
       const childCellProp = getCellAndProp(child)[1];
       //removeChildFromParent finds the dependency from current formula, so we need to set it to new formula
       childCellProp.formula = expression;
-      
+
       removeChildFromParent(child);
       //After the removal of cyclic dependency, we also need to update the UI, change the formula to blank
       childCellProp.formula = "";
@@ -101,13 +105,16 @@ function evaluateFormula(expression) {
     dependentCells.forEach((cell) => {
       const cellRef = getCellAndProp(cell)[0];
       if (cellRef) {
-        const dependentCellValue = Number(cellRef.innerText);
+        let dependentCellValue;
+        if (cellRef.innerText === "0") dependentCellValue = 0;
+        else dependentCellValue = Number(cellRef.innerText) ? Number(cellRef.innerText) : null;
         expression = expression.replace(cell, dependentCellValue);
       } else {
         EVAL_FLAG = false;
       }
     });
-    return EVAL_FLAG ? eval(expression) : "";
+    const expressionResult = eval(expression);
+    return EVAL_FLAG ? expressionResult : "";
   } else {
     try {
       return eval(expression);
