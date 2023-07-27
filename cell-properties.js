@@ -1,4 +1,6 @@
-//storage for cell properties
+// let activeCindellAddress = "";
+
+// storage for cell properties
 const sheetStorage = {};
 let activeCellAddress = "";
 const cellPropertiesPrototype = {

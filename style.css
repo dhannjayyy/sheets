@@ -13,6 +13,7 @@ sheets-action-container */
   --color-green: #218c74;
   --color-gray: #ecf0f1;
   --color-border:#dfe4ea;
+  --color-background:#c9c6c6;
   --color-dummy:#747d8c;
 }
 
@@ -132,16 +133,28 @@ input[type="color"]{
   width: calc(100vw - 2vw);
   display: flex;
   align-items: center;
+  overflow-x: auto;
+  gap: 12px;
 }
 
 .sheet-add-icon {
   width: 2vw;
   margin-inline: 0.3rem;
+  border:none;
 }
 .sheet-folder {
   text-decoration: underline;
   font-weight: bold;
   font-size: 0.9rem;
+  min-width: 4rem;
+  cursor:pointer;
+  padding:5px 10px;
+  border:none;
+}
+
+.active-sheet {
+  background-color: var(--color-background);
+  min-width: 4rem;
 }
 
 /* grid container style */
