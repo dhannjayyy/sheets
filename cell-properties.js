@@ -154,24 +154,6 @@ function updateStyleButtonsUi(e) {
 cellActionsContainer.addEventListener("click", event => updateStyleButtonsUi(event));
 cellActionsContainer.addEventListener("change",event => updateStyleButtonsUi(event));
 
-// const cellAddressDecoder = (address) => {
-//   const addressColRegex = /[A-Z]/g;
-//   const addressRowRegex = /\d/g;
-//   let colDecoded;
-//   let col = address.match(addressColRegex).join("");
-//   const row = address.match(addressRowRegex).join("");
-//   if (col.length > 1) {
-//     for (var i = 0; i < col.length - 1; i++) {
-//       colDecoded = col.charCodeAt(i) - 65;
-//       colDecoded = (colDecoded + 1) * 26;
-//     }
-//     colDecoded = colDecoded + (col.charCodeAt(col.length - 1) - 65);
-//   } else {
-//     colDecoded = col.charCodeAt(0) - 65;
-//   }
-//   return [colDecoded, row];
-// };
-
 // changing the cell actions buttons UI according to the property object of the cell
 function cellActionsUIChanger(activeCellAddress) {
   const [, activeCellProps] = getCellAndProp(activeCellAddress);
