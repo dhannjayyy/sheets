@@ -1,7 +1,5 @@
-// let activeCindellAddress = "";
-
 // storage for cell properties
-const sheetStorage = {};
+let sheetStorage = {};
 let activeCellAddress = "";
 const cellPropertiesPrototype = {
   bold: false,
@@ -65,7 +63,8 @@ const fontAlignmentActiveIconChanger = (
 
 //delegated event listener for cell properties
 const cellActionsContainer = document.querySelector(".cell-actions-container");
-cellActionsContainer.addEventListener("click", (e) => {
+
+function updateStyleButtonsUi(e) {
   const cellActionButton = e.target;
   if (validButtonClick(e) === "click") {
     let [cell, activeCellProp] = getCellAndProp(activeCellAddress);
@@ -122,11 +121,6 @@ cellActionsContainer.addEventListener("click", (e) => {
       delete sheetStorage[activeCellAddress];
     }
   }
-});
-
-//delgated event listener for cell properties
-cellActionsContainer.addEventListener("change", (e) => {
-  const cellActionButton = e.target;
   if (validButtonClick(e) === "change") {
     let [cell, activeCellProp] = getCellAndProp(activeCellAddress);
     switch (cellActionButton.classList[0]) {
@@ -154,7 +148,11 @@ cellActionsContainer.addEventListener("change", (e) => {
       delete sheetStorage[activeCellAddress];
     }
   }
-});
+}
+
+//delgated event listeners for cell properties
+cellActionsContainer.addEventListener("click", event => updateStyleButtonsUi(event));
+cellActionsContainer.addEventListener("change",event => updateStyleButtonsUi(event));
 
 // const cellAddressDecoder = (address) => {
 //   const addressColRegex = /[A-Z]/g;
@@ -174,12 +172,8 @@ cellActionsContainer.addEventListener("change", (e) => {
 //   return [colDecoded, row];
 // };
 
-//making first cell clicked by-default
-let firstCell = document.querySelector(".grid-cell");
-firstCell.focus();
-
 // changing the cell actions buttons UI according to the property object of the cell
-function cellActionsUIChanger() {
+function cellActionsUIChanger(activeCellAddress) {
   const [, activeCellProps] = getCellAndProp(activeCellAddress);
   const buttonBold = document.querySelector(".button-bold");
   const buttonItalic = document.querySelector(".button-italic");

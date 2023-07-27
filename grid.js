@@ -14,10 +14,10 @@ let sheetDefaultNameCounter = 0;
 function clickAndFocusOnCell(e) {
   addressBar.value = e.target.getAttribute("data-address");
   activeCellAddress = addressBar.value; //this is the active cell
-  if (!sheetStorage[activeCellAddress]) {
+  if(!sheetStorage[activeCellAddress]) {
     sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
   }
-  cellActionsUIChanger();
+  cellActionsUIChanger(activeCellAddress);
 }
 
 function activeSheet() {
@@ -33,8 +33,17 @@ function activeSheet() {
       `.sheet-folder[id="${sheet}"]`
     );
     newActiveSheet.classList.add("active-sheet");
+
+    createCellsOnNewActiveSheet(currentActiveSheet, newActiveSheet);
+    
+    //updating the activesheet refs
     activeSheet = newActiveSheet.innerText;
     activeSheetRef = newActiveSheet;
+
+    //changing the sheetStorage to the new sheet
+    sheetStorage = collectedSheets[activeSheet];
+
+    updateUiOnSheetChange();
   }
 
   return [activeSheet, activeSheetRef, setActiveSheet];
@@ -45,19 +54,21 @@ function getSheet(sheet) {
 }
 
 function removeSheet(sheet) {
-  if(sheetsFolderContainer.children.length === 1) {
+  if (sheetsFolderContainer.children.length === 1) {
     alert("Can't delete the last sheet");
     return;
   }
-  const [,,setActiveSheet] = activeSheet();
-  const previousSheet = getSheet(sheet).previousElementSibling;
-  if(previousSheet) {
-    setActiveSheet(previousSheet.innerText);
-  }
-  else{
-    setActiveSheet(getSheet(sheet).nextElementSibling.innerText);
+  const [, activeSheetRef, setActiveSheet] = activeSheet();
+  if (getSheet(sheet) === activeSheetRef) {
+    const previousSheet = getSheet(sheet).previousElementSibling;
+    if (previousSheet) {
+      setActiveSheet(previousSheet.innerText);
+    } else {
+      setActiveSheet(getSheet(sheet).nextElementSibling.innerText);
+    }
   }
   getSheet(sheet).remove();
+  removeSheetData(sheet);
 }
 
 //delegated event listener for all the cells in the grid
@@ -124,11 +135,9 @@ sheetAddButton.addEventListener("click", () => {
   sheetFolder.setAttribute("class", "sheet-folder");
   sheetsFolderContainer.appendChild(sheetFolder);
   sheetFolder.innerText = `Sheet ${++sheetDefaultNameCounter}`;
-  sheetFolder.setAttribute(
-    "id",
-    `Sheet ${sheetDefaultNameCounter}`
-  );
+  sheetFolder.setAttribute("id", `Sheet ${sheetDefaultNameCounter}`);
   const [, , setActiveSheet] = activeSheet();
+  createSheet(sheetFolder.innerText);
   setActiveSheet(sheetFolder.innerText);
 });
 
@@ -149,5 +158,4 @@ sheetsFolderContainer.addEventListener("contextmenu", (e) => {
   e.preventDefault();
 });
 
-sheetAddButton.click();
 gridGenerator();
