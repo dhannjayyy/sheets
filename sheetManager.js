@@ -10,26 +10,41 @@ function removeSheetData(sheet) {
   delete collectedSheets[sheet];
 }
 
-function updateUiOnSheetChange() {
-  for (let key in sheetStorage) {
-    const [cell, cellProps] = getCellAndProp(key);
-    cell.innerText = cellProps.value;
-    cell.style.fontFamily = cellProps.fontFamily;
-    cell.style.fontSize = cellProps.fontSize + "px";
-    cell.style.color = cellProps.textColor;
-    cell.style.backgroundColor = cellProps.backgroundColor;
-    cell.style.textAlign = cellProps.textAlign;
-    cell.style.fontWeight = cellProps.bold ? "bold" : "normal";
-    cell.style.fontStyle = cellProps.italic ? "italic" : "normal";
-    cell.style.textDecoration = cellProps.underline ? "underline" : "none";
-  }
-  
-  //putting the cell to focus in the active sheet that was active in the previous active sheet
-  if(activeCellAddress) {
-    const [cell,] = getCellAndProp(activeCellAddress);
-    cell.focus();
-    cellActionsUIChanger(activeCellAddress);
-  }
+function updateCellsUi(updateCompleteSheet = false) {
+  if (updateCompleteSheet) {
+    for (let key in sheetStorage) {
+      const [cell, cellProps] = getCellAndProp(key);
+      cell.innerText = cellProps.value;
+      cell.style.fontFamily = cellProps.fontFamily;
+      cell.style.fontSize = cellProps.fontSize + "px";
+      cell.style.color = cellProps.textColor;
+      cell.style.backgroundColor = cellProps.backgroundColor;
+      cell.style.textAlign = cellProps.textAlign;
+      cell.style.fontWeight = cellProps.bold ? "bold" : "normal";
+      cell.style.fontStyle = cellProps.italic ? "italic" : "normal";
+      cell.style.textDecoration = cellProps.underline ? "underline" : "none";
+    }
+    //putting the cell to focus in the active sheet that was active in the previous active sheet
+    if (activeCellAddress) {
+      const [cell] = getCellAndProp(activeCellAddress);
+      cell.focus();
+      cellActionsUIChanger(activeCellAddress);
+    }
+  } else
+    return (cellsToUpdate) => {
+      for (let key of cellsToUpdate) {
+        const [cell, cellProps] = getCellAndProp(key);
+        cell.innerText = cellProps.value;
+        cell.style.fontFamily = cellProps.fontFamily;
+        cell.style.fontSize = cellProps.fontSize + "px";
+        cell.style.color = cellProps.textColor;
+        cell.style.backgroundColor = cellProps.backgroundColor;
+        cell.style.textAlign = cellProps.textAlign;
+        cell.style.fontWeight = cellProps.bold ? "bold" : "normal";
+        cell.style.fontStyle = cellProps.italic ? "italic" : "normal";
+        cell.style.textDecoration = cellProps.underline ? "underline" : "none";
+      }
+    };
 }
 
 //Creates those cells in the new sheet which are not present in previous sheet

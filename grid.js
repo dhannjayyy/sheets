@@ -14,7 +14,7 @@ let sheetDefaultNameCounter = 0;
 function clickAndFocusOnCell(e) {
   addressBar.value = e.target.getAttribute("data-address");
   activeCellAddress = addressBar.value; //this is the active cell
-  if(!sheetStorage[activeCellAddress]) {
+  if (!sheetStorage[activeCellAddress]) {
     sheetStorage[activeCellAddress] = { ...cellPropertiesPrototype };
   }
   cellActionsUIChanger(activeCellAddress);
@@ -35,7 +35,7 @@ function activeSheet() {
     newActiveSheet.classList.add("active-sheet");
 
     createCellsOnNewActiveSheet(currentActiveSheet, newActiveSheet);
-    
+
     //updating the activesheet refs
     activeSheet = newActiveSheet.innerText;
     activeSheetRef = newActiveSheet;
@@ -43,7 +43,7 @@ function activeSheet() {
     //changing the sheetStorage to the new sheet
     sheetStorage = collectedSheets[activeSheet];
 
-    updateUiOnSheetChange();
+    updateCellsUi(updateCompleteSheet=true);
   }
 
   return [activeSheet, activeSheetRef, setActiveSheet];
