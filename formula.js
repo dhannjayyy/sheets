@@ -138,7 +138,6 @@ function getDependentcells(expression) {
   dependentCells = dependentCells.filter((cell) =>
     cell.match(dependentCellsRegex)
   );
-  console.log("b1".match(dependentCellsRegex));
   dependentCells = dependentCells.map((cell) => toCapitalCase(cell));
   return dependentCells;
 }
