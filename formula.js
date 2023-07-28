@@ -107,7 +107,10 @@ function evaluateFormula(expression) {
       if (cellRef) {
         let dependentCellValue;
         if (cellRef.innerText === "0") dependentCellValue = 0;
-        else dependentCellValue = Number(cellRef.innerText) ? Number(cellRef.innerText) : null;
+        else
+          dependentCellValue = Number(cellRef.innerText)
+            ? Number(cellRef.innerText)
+            : null;
         expression = expression.replace(cell, dependentCellValue);
       } else {
         EVAL_FLAG = false;
@@ -126,14 +129,16 @@ function getDependentcells(expression) {
   //regex for finding valid cell addresses
   const dependentCellsRegex = /^[A-Za-z]+[1-9][0-9]*$/g;
   const dependentCellsOperatorsRemovalRegex = /[%+/*-]/g;
+  const dependentCellsParanthesisRemovalRegex = /[()]/g;
   let dependentCells = expression
     .replace(dependentCellsOperatorsRemovalRegex, " ")
+    .replace(dependentCellsParanthesisRemovalRegex, " ")
     .split(" ");
-
-  //filtering out valid cell addresses
+  // filtering out valid cell addresses
   dependentCells = dependentCells.filter((cell) =>
     cell.match(dependentCellsRegex)
   );
+  console.log("b1".match(dependentCellsRegex));
   dependentCells = dependentCells.map((cell) => toCapitalCase(cell));
   return dependentCells;
 }
