@@ -12,9 +12,9 @@ sheets-action-container */
   --color-creme: #f1f2f6;
   --color-green: #218c74;
   --color-gray: #ecf0f1;
-  --color-border:#dfe4ea;
-  --color-background:#c9c6c6;
-  --color-dummy:#747d8c;
+  --color-border: #dfe4ea;
+  --color-background: #c9c6c6;
+  --color-dummy: #747d8c;
 }
 
 body {
@@ -30,13 +30,23 @@ body {
 .page-actions-container {
   background-color: var(--color-green);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   padding-left: 1rem;
 }
 
 .page-action {
-  margin-inline: 0.5rem;
   color: var(--color-creme);
+  width:4rem;
+  text-align: center;
+  height:2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selected-page-action {
+  background-color: var(--color-creme);
+  color: var(--color-green);
 }
 
 /* cell actions style */
@@ -60,11 +70,11 @@ body {
   outline: none;
 }
 
-.material-icons{
+.material-icons {
   cursor: pointer;
 }
 
-input[type="color"]{
+input[type="color"] {
   cursor: pointer;
 }
 
@@ -74,17 +84,17 @@ input[type="color"]{
   padding-left: 1rem;
   display: flex;
   align-items: center;
-  height:2rem;
+  height: 2rem;
 }
 
 .formula-actions-container > * {
   margin-right: 0.7rem;
 }
 
-.formula-actions-container input{
-    border: none;
-    outline: none;
-    height:70%;
+.formula-actions-container input {
+  border: none;
+  outline: none;
+  height: 70%;
 }
 
 .formula-icon {
@@ -100,24 +110,26 @@ input[type="color"]{
   width: calc(100vw - 5rem - 0.7rem - 0.7rem - 0.7rem);
 }
 
-#format-color-text-picker, #format-color-text-bg{
+#format-color-text-picker,
+#format-color-text-bg {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
 }
 
-#format-color-text-picker span, #format-color-text-bg span{
+#format-color-text-picker span,
+#format-color-text-bg span {
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
 }
 
-#format-color-text-picker input, #format-color-text-bg input{
+#format-color-text-picker input,
+#format-color-text-bg input {
   opacity: 0;
   z-index: 2;
 }
-
 
 /* sheets actions style */
 .sheets-actions-container {
@@ -140,16 +152,16 @@ input[type="color"]{
 .sheet-add-icon {
   width: 2vw;
   margin-inline: 0.3rem;
-  border:none;
+  border: none;
 }
 .sheet-folder {
   text-decoration: underline;
   font-weight: bold;
   font-size: 0.9rem;
   min-width: 5rem;
-  cursor:pointer;
-  padding:5px 10px;
-  border:none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: none;
 }
 
 .active-sheet {
@@ -167,63 +179,64 @@ input[type="color"]{
   grid-template-rows: 2rem auto;
 }
 
-.column-address-container{
-    height:2rem;
-    grid-column: 2/-1;
-    display: flex;
-    position: sticky;
-    top:0;
+.column-address-container {
+  height: 2rem;
+  grid-column: 2/-1;
+  display: flex;
+  position: sticky;
+  top: 0;
 }
 
-.row-address-container{
-    grid-row:2/-1;
-    width:2rem;
-    position: sticky;
-    left:0;
+.row-address-container {
+  grid-row: 2/-1;
+  width: 2rem;
+  position: sticky;
+  left: 0;
 }
 
-p.row-address, p.column-address{
-    background-color: var(--color-gray);
-    border-bottom:2px solid var(--color-border);
-    border-right:2px solid var(--color-border);
-    margin:0;
-    width:2rem;
-    height:2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
+p.row-address,
+p.column-address {
+  background-color: var(--color-gray);
+  border-bottom: 2px solid var(--color-border);
+  border-right: 2px solid var(--color-border);
+  margin: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
 }
 
-p.column-address{
-    width:5rem;
+p.column-address {
+  width: 5rem;
 }
 
-.dummy-top-left{
-    background-color: var(--color-dummy);
-    width:2rem;
-    height:2rem;
-    grid-column: 1/2;
-    position: sticky;
-    top:0;
-    left:0;
-    z-index: 1;
+.dummy-top-left {
+  background-color: var(--color-dummy);
+  width: 2rem;
+  height: 2rem;
+  grid-column: 1/2;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.cells-container-grid{
-    display: flex;
-    flex-wrap: wrap;
+.cells-container-grid {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.grid-cell{
-    background-color: white;
-    width:5rem;
-    height:2rem;
-    border:none;
-    border-bottom: 2px solid var(--color-border);
-    border-right: 2px solid var(--color-border);
-    outline:none;
-    font-family: monospace;
-    font-size: 14px;
-    padding:0;
+.grid-cell {
+  background-color: white;
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  border-bottom: 2px solid var(--color-border);
+  border-right: 2px solid var(--color-border);
+  outline: none;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 0;
 }
