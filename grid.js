@@ -139,6 +139,7 @@ sheetAddButton.addEventListener("click", () => {
   const [, , setActiveSheet] = activeSheet();
   createSheet(sheetFolder.innerText);
   setActiveSheet(sheetFolder.innerText);
+  sheetFolder.scrollIntoView();
 });
 
 sheetsFolderContainer.addEventListener("click", (e) => {
