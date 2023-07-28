@@ -21,17 +21,6 @@ let dataToBePasted;
 //   return [Number(row) - 1, colDecoded];
 // };
 
-const rangeDecoder = (range) => {
-  let decodedColRange = range.map((address) => address.charCodeAt(0));
-  let decodedRowRange = range.map((address) => Number(address.slice(1)));
-  decodedColRange = decodedColRange.sort();
-  decodedRowRange = decodedRowRange.sort();
-  return [
-    [decodedRowRange[0], decodedColRange[0]],
-    [decodedRowRange[1], decodedColRange[1]],
-  ];
-};
-
 cellsContainerGrid.addEventListener("click", (e) => {
   if (e.ctrlKey) {
     if (
@@ -52,6 +41,17 @@ cellsContainerGrid.addEventListener("click", (e) => {
     }
   }
 });
+
+function rangeDecoder(range) {
+  let decodedColRange = range.map((address) => address.charCodeAt(0));
+  let decodedRowRange = range.map((address) => Number(address.slice(1)));
+  decodedColRange = decodedColRange.sort();
+  decodedRowRange = decodedRowRange.sort();
+  return [
+    [decodedRowRange[0], decodedColRange[0]],
+    [decodedRowRange[1], decodedColRange[1]],
+  ];
+}
 
 function removeSingleSelection(e) {
   const indexToRemove = selectedRange.indexOf(
@@ -78,50 +78,45 @@ function resetSelectedRangeUI() {
 }
 
 function dataAggregator(e) {
-  if (
-    e.target.classList.contains("button-copy") ||
-    e.target.classList.contains("button-cut")
-  ) {
-    if (selectedRange.length === 0) return;
-    let selectedRangeDecoded = [];
-    let selectedRangeEncoded = [];
-    dataToBePasted = [];
-    if (selectedRange.length === 2) {
-      selectedRangeDecoded = rangeDecoder(selectedRange);
+  if (selectedRange.length === 0) return;
+  let selectedRangeDecoded = [];
+  let selectedRangeEncoded = [];
+  dataToBePasted = [];
+  if (selectedRange.length === 2) {
+    selectedRangeDecoded = rangeDecoder(selectedRange);
+    for (
+      var row = selectedRangeDecoded[0][0];
+      row <= selectedRangeDecoded[1][0];
+      row++
+    ) {
+      let dataRow = [];
       for (
-        var row = selectedRangeDecoded[0][0];
-        row <= selectedRangeDecoded[1][0];
-        row++
+        var col = selectedRangeDecoded[0][1];
+        col <= selectedRangeDecoded[1][1];
+        col++
       ) {
-        let dataRow = [];
-        for (
-          var col = selectedRangeDecoded[0][1];
-          col <= selectedRangeDecoded[1][1];
-          col++
-        ) {
-          const [, cellProps] = getCellAndProp(
-            `${String.fromCharCode(col)}${row}`
-          );
-          const cellData = { ...cellProps };
-          delete cellData.formula;
-          delete cellData.children;
-          dataRow.push(cellData);
-          selectedRangeEncoded.push(`${String.fromCharCode(col)}${row}`);
-        }
-        dataToBePasted.push(dataRow);
+        const [, cellProps] = getCellAndProp(
+          `${String.fromCharCode(col)}${row}`
+        );
+        const cellData = { ...cellProps };
+        delete cellData.formula;
+        delete cellData.children;
+        dataRow.push(cellData);
+        selectedRangeEncoded.push(`${String.fromCharCode(col)}${row}`);
       }
-    } else if (selectedRange.length === 1) {
-      const [, cellProps] = getCellAndProp(selectedRange[0]);
-      const cellData = { ...cellProps };
-      delete cellData.formula;
-      delete cellData.children;
-      dataToBePasted.push(cellData);
+      dataToBePasted.push(dataRow);
     }
-    if (e.target.classList.contains("button-cut")) {
-      cutOperationHandler(selectedRangeEncoded);
-    }
-    resetSelectedRangeUI();
+  } else if (selectedRange.length === 1) {
+    const [, cellProps] = getCellAndProp(selectedRange[0]);
+    const cellData = { ...cellProps };
+    delete cellData.formula;
+    delete cellData.children;
+    dataToBePasted.push(cellData);
   }
+  if (e.target.classList.contains("button-cut")) {
+    cutOperationHandler(selectedRangeEncoded);
+  }
+  resetSelectedRangeUI();
 }
 
 function cutOperationHandler(selectedRangeEncoded) {
@@ -131,6 +126,49 @@ function cutOperationHandler(selectedRangeEncoded) {
   updateCellsUi()(selectedRangeEncoded);
 }
 
-cellActionsContainer.addEventListener("click", (event) =>
-  dataAggregator(event)
-);
+function pasteOperationHandler() {
+  if (!dataToBePasted) return;
+  const startCol = activeCellAddress[0];
+  const startRow = activeCellAddress[1];
+  const cellsToBeUpdated = [];
+
+  for (let row = 0; row < dataToBePasted.length; row++) {
+    for (let col = 0; col < dataToBePasted[row].length; col++) {
+      updatePastedCellsData(row, col);
+    }
+  }
+
+  function updatePastedCellsData(row, col) {
+    const [cell, cellProps] = getCellAndProp(
+      `${String.fromCharCode(startCol.charCodeAt(0) + col)}${
+        Number(startRow) + row
+      }`
+    );
+    if (!cell) return;
+
+    cellProps.bold = dataToBePasted[row][col].bold;
+    cellProps.itlaic = dataToBePasted[row][col].itlaic;
+    cellProps.underline = dataToBePasted[row][col].underline;
+    cellProps.textAlign = dataToBePasted[row][col].textAlign;
+    cellProps.fontFamily = dataToBePasted[row][col].fontFamily;
+    cellProps.fontSize = dataToBePasted[row][col].fontSize;
+    cellProps.textColor = dataToBePasted[row][col].textColor;
+    cellProps.backgroundColor = dataToBePasted[row][col].backgroundColor;
+    cellProps.value = dataToBePasted[row][col].value;
+
+    cellsToBeUpdated.push(cell.getAttribute("data-address"));
+  }
+  updateCellsUi()(cellsToBeUpdated);
+}
+
+//Event listener for cut,copy and paste
+cellActionsContainer.addEventListener("click", (event) => {
+  if (
+    event.target.classList.contains("button-copy") ||
+    event.target.classList.contains("button-cut")
+  ) {
+    dataAggregator(event);
+  } else if (event.target.classList.contains("button-paste")) {
+    pasteOperationHandler();
+  }
+});
